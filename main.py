@@ -6,13 +6,15 @@ import matplotlib.pyplot as plt
 data = pd.read_csv("Space_Corrected.csv")
 
 print(data.shape)
-print(data.tail())
+data.tail()
 
 print(data.isna().values.any())
-print(data.duplicated().values.any())
+data.duplicated().values.any()
 
 clean_data = data
 clean_data.shape
+
+data.columns
 
 clean_data.drop(columns=['Unnamed: 0', 'Unnamed: 0.1'],axis=1,inplace=True)
 clean_data.head()
@@ -24,6 +26,7 @@ clean_data.drop(columns=" Rocket",inplace=True)
 
 clean_data['Rocket_cost'] = pd.to_numeric(clean_data['Rocket_cost'])
 clean_data.rename(columns = {'Status Rocket': 'Status_Rocket', 'Status Mission': 'Status_Mission', 'Company Name': 'Company_Name'}, inplace = True)
+
 
 clean_data.info()
 
@@ -58,10 +61,14 @@ plt.show()
 #TOP 10 COUNTRIES
 clean_data.Company_Name.value_counts().head(10)
 
+Which year has the lowest success rate?
+
 successes_count = clean_data[ clean_data["Status_Mission"] == "Success" ].groupby("year").count()["Status_Mission"]
 
 bar = px.bar(x=successes_count.index,y=successes_count.values)
 bar.show()
+
+Which company has the highest success count?
 
 top_companies = clean_data[clean_data["Status_Mission"] == "Success"].groupby("Company_Name").count()["Status_Mission"]
 top_companies = top_companies.sort_values(ascending=False)
@@ -78,6 +85,9 @@ plt.xlabel("company name",fontsize=25)
 
 plt.show()
 
+Failure Graph failure count?how much success or failure occored?
+
+
 failure_count = clean_data.query('Status_Mission != "Success"')["Status_Mission"].value_counts()
 
 bar_x = px.bar(x=failure_count.index,
@@ -91,6 +101,8 @@ bar_x.update_layout(xaxis_title="COUNT",
                   )
 bar_x.show()
 
+Q: Rocket Cost
+
 plt.figure(figsize=(20,15))
 plt.title("cost of making rocket in one year",fontsize=30)
 plt.xticks(fontsize=10,rotation=45)
@@ -101,6 +113,10 @@ plt.ylabel("rocket cost m(million)",fontsize=25)
 plt.xlabel("year",fontsize=25)
 
 plt.show()
+
+
+ company having acitve rockets?
+ 
 
 clean_data.head(2)
 
